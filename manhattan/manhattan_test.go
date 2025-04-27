@@ -197,6 +197,14 @@ func TestDistance(t *testing.T) {
 			expected: 2,
 			wantErr:  false,
 		},
+		{
+			name: "Matriz muito grande (>100 colunas)",
+			matrix: func() [][]int {
+				row := make([]int, 101)
+				return [][]int{row}
+			}(),
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
