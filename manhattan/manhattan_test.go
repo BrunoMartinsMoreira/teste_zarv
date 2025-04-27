@@ -124,3 +124,93 @@ func TestCalculateDistance(t *testing.T) {
 		})
 	}
 }
+
+func TestDistance(t *testing.T) {
+	tests := []struct {
+		name     string
+		matrix   [][]int
+		expected int
+		wantErr  bool
+	}{
+		{
+			name: "Matriz válida com distância horizontal",
+			matrix: [][]int{
+				{1, 0, 0, 1},
+				{0, 0, 0, 0},
+			},
+			expected: 3,
+			wantErr:  false,
+		},
+		{
+			name: "Matriz válida com distância vertical",
+			matrix: [][]int{
+				{1, 0},
+				{0, 0},
+				{0, 1},
+			},
+			expected: 3,
+			wantErr:  false,
+		},
+		{
+			name: "Matriz válida com distância diagonal",
+			matrix: [][]int{
+				{1, 0, 0},
+				{0, 0, 0},
+				{0, 0, 1},
+			},
+			expected: 4,
+			wantErr:  false,
+		},
+		{
+			name:     "Matriz vazia",
+			matrix:   [][]int{},
+			expected: 0,
+			wantErr:  true,
+		},
+		{
+			name: "Matriz muito grande (>100 linhas)",
+			matrix: func() [][]int {
+				m := make([][]int, 101)
+				for i := range m {
+					m[i] = make([]int, 1)
+				}
+				return m
+			}(),
+			expected: 0,
+			wantErr:  true,
+		},
+		{
+			name: "Matriz com apenas um ponto",
+			matrix: [][]int{
+				{1, 0, 0},
+				{0, 0, 0},
+			},
+			expected: 0,
+			wantErr:  true,
+		},
+		{
+			name: "Matriz com mais de dois pontos",
+			matrix: [][]int{
+				{1, 0, 1},
+				{0, 1, 0},
+			},
+			expected: 2,
+			wantErr:  false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := Distance(tt.matrix)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Distance() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if !tt.wantErr && got != tt.expected {
+				t.Errorf("Distance() = %v, want %v", got, tt.expected)
+			}
+		})
+	}
+}
