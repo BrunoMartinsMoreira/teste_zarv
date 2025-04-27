@@ -36,3 +36,16 @@ func calculateDistance(coord1, coord2 Coordinates) int {
 	return int(math.Abs(float64(coord1.line-coord2.line))) +
 		int(math.Abs(float64(coord1.collumn-coord2.collumn)))
 }
+
+func Distance(matrix [][]int) (int, error) {
+	if len(matrix) == 0 || len(matrix) > 100 {
+		return 0, fmt.Errorf("a matriz deve ter entre 1 e 100 linhas")
+	}
+
+	coordinates, err := findCoordinates(matrix)
+	if err != nil {
+		return 0, err
+	}
+
+	return calculateDistance(coordinates[0], coordinates[1]), nil
+}
