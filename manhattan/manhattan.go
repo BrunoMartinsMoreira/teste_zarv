@@ -1,6 +1,9 @@
 package manhattan
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Coordinates struct {
 	line    int
@@ -27,4 +30,9 @@ searchLoop:
 	}
 
 	return coordinates, nil
+}
+
+func calculateDistance(coord1, coord2 Coordinates) int {
+	return int(math.Abs(float64(coord1.line-coord2.line))) +
+		int(math.Abs(float64(coord1.collumn-coord2.collumn)))
 }
