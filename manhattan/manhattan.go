@@ -42,6 +42,10 @@ func Distance(matrix [][]int) (int, error) {
 		return 0, fmt.Errorf("a matriz deve ter entre 1 e 100 linhas")
 	}
 
+	if len(matrix[0]) == 0 || len(matrix[0]) > 100 {
+		return 0, fmt.Errorf("a matriz deve ter entre 1 e 100 colunas")
+	}
+
 	coordinates, err := findCoordinates(matrix)
 	if err != nil {
 		return 0, err
