@@ -214,3 +214,76 @@ func TestDistance(t *testing.T) {
 		})
 	}
 }
+
+func TestDistanceIntegration(t *testing.T) {
+	tests := []struct {
+		name        string
+		matrix      [][]int
+		expected    int
+		wantErr     bool
+		description string
+	}{
+		{
+			name: "Integração - Fluxo completo com sucesso",
+			matrix: [][]int{
+				{0, 1, 0, 0},
+				{0, 0, 0, 0},
+				{0, 0, 0, 1},
+			},
+			expected:    4,
+			wantErr:     false,
+			description: "Testa o fluxo completo passando por findCoordinates e calculateDistance",
+		},
+		{
+			name: "Integração - Matriz inválida por tamanho",
+			matrix: func() [][]int {
+				m := make([][]int, 101)
+				for i := range m {
+					m[i] = make([]int, 1)
+					m[i][0] = 1
+				}
+				return m
+			}(),
+			expected:    0,
+			wantErr:     true,
+			description: "Deve falhar logo na validação inicial do tamanho da matriz",
+		},
+		{
+			name: "Integração - Matriz inválida por quantidade de pontos",
+			matrix: [][]int{
+				{0, 1, 0},
+				{0, 0, 0},
+			},
+			expected:    0,
+			wantErr:     true,
+			description: "Deve falhar na função findCoordinates por ter apenas um ponto",
+		},
+		{
+			name: "Integração - Distância zero entre pontos",
+			matrix: [][]int{
+				{1, 1, 0},
+				{0, 0, 0},
+			},
+			expected:    1,
+			wantErr:     false,
+			description: "Testa o fluxo completo com pontos próximos",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			distance, err := Distance(tt.matrix)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("[%s] Distance() error = %v, wantErr %v\nDescrição: %s",
+					tt.name, err, tt.wantErr, tt.description)
+				return
+			}
+
+			if !tt.wantErr && distance != tt.expected {
+				t.Errorf("[%s] Distance() = %v, want %v\nDescrição: %s",
+					tt.name, distance, tt.expected, tt.description)
+			}
+		})
+	}
+}
