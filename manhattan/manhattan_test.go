@@ -75,3 +75,52 @@ func TestFindCoordinates(t *testing.T) {
 		})
 	}
 }
+
+func TestCalculateDistance(t *testing.T) {
+	tests := []struct {
+		name     string
+		coord1   Coordinates
+		coord2   Coordinates
+		expected int
+	}{
+		{
+			name:     "Distância na horizontal",
+			coord1:   Coordinates{line: 0, collumn: 0},
+			coord2:   Coordinates{line: 0, collumn: 3},
+			expected: 3,
+		},
+		{
+			name:     "Distância na vertical",
+			coord1:   Coordinates{line: 0, collumn: 0},
+			coord2:   Coordinates{line: 4, collumn: 0},
+			expected: 4,
+		},
+		{
+			name:     "Distância diagonal",
+			coord1:   Coordinates{line: 0, collumn: 0},
+			coord2:   Coordinates{line: 2, collumn: 2},
+			expected: 4,
+		},
+		{
+			name:     "Distância com coordenadas negativas",
+			coord1:   Coordinates{line: -1, collumn: -1},
+			coord2:   Coordinates{line: 1, collumn: 1},
+			expected: 4,
+		},
+		{
+			name:     "Mesmas coordenadas",
+			coord1:   Coordinates{line: 1, collumn: 1},
+			coord2:   Coordinates{line: 1, collumn: 1},
+			expected: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := calculateDistance(tt.coord1, tt.coord2)
+			if result != tt.expected {
+				t.Errorf("calculateDistance() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}
